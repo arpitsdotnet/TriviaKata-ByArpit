@@ -25,6 +25,8 @@ namespace Trivia.ConsoleUI
 
         public Game(Action<string> writeOut = null)
         {
+            _writeOut = writeOut ?? Console.WriteLine;
+
             for (var i = 0; i < 50; i++)
             {
                 _popQuestions.AddLast("Pop Question " + i);
@@ -32,7 +34,6 @@ namespace Trivia.ConsoleUI
                 _sportsQuestions.AddLast("Sports Question " + i);
                 _rockQuestions.AddLast(CreateRockQuestion(i));
             }
-            _writeOut = writeOut ?? Console.WriteLine;
         }
 
         public string CreateRockQuestion(int index)
