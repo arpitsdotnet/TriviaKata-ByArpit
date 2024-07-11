@@ -93,67 +93,46 @@ namespace Trivia.Tests
             log[4].Should().Be($"{playerName3} was added");
             log[5].Should().Be($"They are player number 3");
         }
-
-        [Fact]
-        public void HowManyPlayers_ShouldReturns0_WhenNoPlayersAreAdded()
+        
+        [Theory]
+        [InlineData(0, "Pop")]
+        [InlineData(1, "Science")]
+        [InlineData(2, "Sports")]
+        [InlineData(3, "Rock")]
+        [InlineData(4, "Pop")]
+        [InlineData(5, "Science")]
+        [InlineData(6, "Sports")]
+        [InlineData(7, "Rock")]
+        [InlineData(8, "Pop")]
+        [InlineData(9, "Science")]
+        [InlineData(10, "Sports")]
+        [InlineData(11, "Rock")]
+        // - Add three Players
+        public void Role_For_Current_Player(int roll, string expectedCategory)
         {
             // Arrange
-            var sut = new Game();
+            const string playerName1 = "Foo";
+            const string playerName2 = "Bar";
+            const string playerName3 = "FooBar";
+
+            var log = new List<string>();
+            var sut = new Game(log.Add);
+            sut.Add(playerName1);
+            sut.Add(playerName2);
+            sut.Add(playerName3);
+            log.Clear();
 
             // Act
-            var noOfPlayers = sut.HowManyPlayers();
+            sut.Roll(roll);
 
             // Assert
-            Assert.Equal(0, noOfPlayers);
-
+            log.Count.Should().Be(5);
+            log[0].Should().Be($"{playerName1} is the current player");
+            log[1].Should().Be($"They have rolled a {roll}");
+            log[2].Should().Be($"{playerName1}'s new location is {roll}");
+            log[3].Should().Be($"The category is {expectedCategory}");
+            log[4].Should().Be($"{expectedCategory} Question 0");
         }
 
-        [Fact]
-        public void HowManyPlayers_ShouldReturns1_WhenOnePlayersAreAdded()
-        {
-            // Arrange
-            var sut = new Game();
-            sut.Add("Foo");
-
-            // Act
-            var noOfPlayers = sut.HowManyPlayers();
-
-            // Assert
-            Assert.Equal(1, noOfPlayers);
-
-        }
-
-        [Fact]
-        public void HowManyPlayers_ShouldReturns2_WhenTwoPlayersAreAdded()
-        {
-            // Arrange
-            var sut = new Game();
-            sut.Add("Foo");
-            sut.Add("Bar");
-
-            // Act
-            var noOfPlayers = sut.HowManyPlayers();
-
-            // Assert
-            Assert.Equal(2, noOfPlayers);
-
-        }
-
-        [Fact]
-        public void HowManyPlayers_ShouldReturns3_WhenThreePlayersAreAdded()
-        {
-            // Arrange
-            var sut = new Game();
-            sut.Add("Foo");
-            sut.Add("Bar");
-            sut.Add("FooBar");
-
-            // Act
-            var noOfPlayers = sut.HowManyPlayers();
-
-            // Assert
-            Assert.Equal(3, noOfPlayers);
-
-        }
     }
 }
